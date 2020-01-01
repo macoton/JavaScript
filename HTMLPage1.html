@@ -1,0 +1,23 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <script language="javascript">
+        //現在日時文字列を取得
+        var now = new Date();
+        var datetime =
+            ('0000' + now.getFullYear()).substr(-4) + '/' +
+            ('00' + (now.getMonth() + 1)).substr(-2) + '/' +
+            ('00' + now.getDate()).substr(-2) + ' ' +
+            ('00' + now.getHours()).substr(-2) + ':' +
+            ('00' + now.getMinutes()).substr(-2) + ':' +
+            ('00' + now.getSeconds()).substr(-2);
+        //描画
+        document.writeln(datetime);
+    </script>
+</body>
+</html>
