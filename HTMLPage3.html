@@ -26,7 +26,12 @@
                     //描画
                     for (var count = 0; count < 19; ++count) {
                         var digit = document.getElementById('digit' + count);
-                        digit.innerHTML = datetime.substr(count, 1);
+                        var context = digit.getContext('2d');
+                        context.fillStyle = 'white';
+                        context.fillRect(0, 0, digit.offsetWidth, digit.offsetHeight);
+                        context.fillStyle = 'black';
+                        context.font = digit.offsetHeight + 'px serif'
+                        context.fillText(datetime.substr(count, 1), 0, digit.offsetHeight);
                     }
                 }
 
@@ -41,7 +46,7 @@
                 //01234567890123456789
                 var digit = [];
                 for (var count = 0; count < 19; ++count) {
-                    digit.push('<span id="digit' + count + '"></span>');
+                    digit.push('<canvas id="digit' + count + '" width="35%" height="70%"></canvas>');
                 }
                 canvas.innerHTML = digit.join('');
                 //タイムアウト処理設定
