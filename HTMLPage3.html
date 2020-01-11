@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <title></title>
 </head>
-<body style="font-size: 400%">
+<body>
     <div id="canvas">
 
     </div>
@@ -30,7 +30,7 @@
                         context.fillStyle = 'white';
                         context.fillRect(0, 0, digit.offsetWidth, digit.offsetHeight);
                         context.fillStyle = 'black';
-                        context.font = digit.offsetHeight + 'px serif'
+                        context.font = digit.offsetHeight + 'px impact'
                         context.fillText(datetime.substr(count, 1), 0, digit.offsetHeight);
                     }
                 }
