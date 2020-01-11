@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body style="font-size: 400%">
+    <div id="canvas">
+
+    </div>
+    <script>
+        try {
+            //タイムアウト処理
+            function timeout() {
+                //現在日時文字列を取得
+                var now = new Date();
+                var datetime =
+                    ('0000' + now.getFullYear()).substr(-4) + '/' +
+                    ('00' + (now.getMonth() + 1)).substr(-2) + '/' +
+                    ('00' + now.getDate()).substr(-2) + ' ' +
+                    ('00' + now.getHours()).substr(-2) + ':' +
+                    ('00' + now.getMinutes()).substr(-2) + ':' +
+                    ('00' + now.getSeconds()).substr(-2);
+                //描画
+                for (var count = 0; count < 19; ++count) {
+                    var child = document.getElementById('child' + count);
+                    child.innerHTML = datetime.substr(count, 1);
+                }
+            }
+
+            //描画領域を取得
+            var canvas = document.getElementById('canvas');
+            if (!canvas) {
+                throw new Error('not fond canvas.');
+            }
+            //描画領域を分割
+            //YYYY/MM/DD HH:MM:SS
+            //          1
+            //01234567890123456789
+            for (var count = 0; count < 19; ++count) {
+                var child = document.createElement('span');
+                child.id = 'child' + count;
+                canvas.appendChild(child);
+            }
+            //タイムアウト処理設定
+            (function () {
+                //タイムアウト処理
+                timeout();
+                //次回タイムアウト処理設定
+                var remain = 1000 - (new Date().getTime() % 1000);
+                setTimeout(arguments.callee, remain);
+            })();
+        }
+        catch (e) {
+            //例外処理
+            document.writeln(e.message);
+            console.log('stack:\n' + e.stack);
+        }
+    </script>
+</body>
+</html>
