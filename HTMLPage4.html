@@ -10,14 +10,17 @@
 
     </div>
     <script>
-        var digitFreeformArray = [[[21, 0], [95, 0], [98, 1], [83, 10], [34, 10], [18, 1]], 
-        [[99, 2], [92, 47], [82, 52], [76, 48], [82, 9], [98, 1]], 
-        [[90, 56], [84, 96], [82, 98], [68, 92], [74, 57], [83, 52]], 
-        [[79, 100], [4, 99], [2, 98], [16, 91], [66, 91], [81, 98]], 
-        [[0, 97], [6, 57], [16, 53], [24, 56], [17, 90], [2, 98]], 
-        [[8, 48], [16, 2], [18, 1], [32, 8], [25, 48], [17, 52]], 
-        [[26, 49], [75, 48], [83, 53], [74, 57], [25, 56], [18, 52]]];
-        var digitOnOffArray = [0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x6F];
+        var digitPolygonArray = [[[23, 1], [92, 2], [94, 3], [80, 10], [35, 10], [21, 2]], 
+        [[95, 4], [89, 47], [80, 52], [73, 48], [79, 11], [94, 3]], 
+        [[88, 56], [81, 95], [79, 96], [66, 90], [72, 56], [80, 52]], 
+        [[77, 98], [7, 98], [6, 96], [19, 90], [64, 89], [79, 97]], 
+        [[3, 95], [10, 56], [19, 52], [26, 56], [20, 89], [5, 96]], 
+        [[11, 48], [19, 4], [20, 3], [34, 9], [27, 47], [19, 52]], 
+        [[26, 48], [73, 48], [80, 52], [72, 56], [27, 56], [19, 52]], 
+        [[76, 18], [30, 90], [23, 81], [68, 10]], 
+        [[58, 25], [58, 32], [49, 32], [49, 25]], 
+        [[50, 69], [50, 75], [40, 75], [40, 69]]];
+        var digitOnOffArray = [0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x6F, 0x80, 0x300];
 
         window.onload = function () {
             try {
@@ -38,18 +41,25 @@
                         var digit = document.getElementById('digit' + count);
                         var context = digit.getContext('2d');
                         var number = datetime.substr(count, 1);
+                        var digitOnOff = 0x0;
                         if (number >= '0' && number <= '9') {
-                            var digitOnOff = digitOnOffArray[parseInt(number, 10)];
-                            for (var count2 = 0; count2 < 7; ++count2) {
-                                context.fillStyle = digitOnOff >> count2 & 1 ? 'black' : 'white';
-                                context.beginPath();
-                                context.moveTo(digitFreeformArray[count2][0][0] * digit.offsetWidth / 100, digitFreeformArray[count2][0][1] * digit.offsetHeight / 100);
-                                for (var count3 = 1; count3 < digitFreeformArray[count2].length; ++count3) {
-                                    context.lineTo(digitFreeformArray[count2][count3][0] * digit.offsetWidth / 100, digitFreeformArray[count2][count3][1] * digit.offsetHeight / 100);
-                                }
-                                context.moveTo(digitFreeformArray[count2][0][0] * digit.offsetWidth / 100, digitFreeformArray[count2][0][1] * digit.offsetHeight / 100);
-                                context.fill();
+                            digitOnOff = digitOnOffArray[parseInt(number, 10)]
+                        }
+                        else if (number == '/') {
+                            digitOnOff = digitOnOffArray[10]
+                        }
+                        else if (number == ':') {
+                            digitOnOff = digitOnOffArray[11]
+                        }
+                        for (var count2 = 0; count2 < 10; ++count2) {
+                            context.fillStyle = digitOnOff >> count2 & 1 ? 'black' : 'white';
+                            context.beginPath();
+                            context.moveTo(digitPolygonArray[count2][0][0] * digit.offsetWidth / 100, digitPolygonArray[count2][0][1] * digit.offsetHeight / 100);
+                            for (var count3 = 1; count3 < digitPolygonArray[count2].length; ++count3) {
+                                context.lineTo(digitPolygonArray[count2][count3][0] * digit.offsetWidth / 100, digitPolygonArray[count2][count3][1] * digit.offsetHeight / 100);
                             }
+                            context.moveTo(digitPolygonArray[count2][0][0] * digit.offsetWidth / 100, digitPolygonArray[count2][0][1] * digit.offsetHeight / 100);
+                            context.fill();
                         }
                     }
                 }
@@ -79,7 +89,7 @@
             }
             catch (e) {
                 //例外処理
-                document.writeln(e.message);
+                console.log(e.message);
                 console.log('stack:\n' + e.stack);
             }
         };
