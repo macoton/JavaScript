@@ -20,11 +20,12 @@
         [[76, 18], [30, 90], [23, 81], [68, 10]], 
         [[58, 25], [58, 32], [49, 32], [49, 25]], 
         [[50, 69], [50, 75], [40, 75], [40, 69]]];
-        var digitOnOffArray = [0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x6F, 0x80, 0x300];
+        var digitOnOffArray = [0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x6F, 0x80, 0x300, 0x0];
 
         window.onload = function () {
             try {
 
+                var sw = true;
                 //タイムアウト処理
                 function timeout() {
                     //現在日時文字列を取得
@@ -49,7 +50,7 @@
                             digitOnOff = digitOnOffArray[10]
                         }
                         else if (number == ':') {
-                            digitOnOff = digitOnOffArray[11]
+                            digitOnOff = digitOnOffArray[sw ? 11 : 12];
                         }
                         for (var count2 = 0; count2 < 10; ++count2) {
                             context.fillStyle = digitOnOff >> count2 & 1 ? 'black' : 'white';
@@ -62,6 +63,7 @@
                             context.fill();
                         }
                     }
+                            sw = !sw;
                 }
 
                 //描画領域を取得
@@ -83,7 +85,7 @@
                     //タイムアウト処理
                     timeout();
                     //次回タイムアウト処理設定
-                    var remain = 1000 - (new Date().getTime() % 1000);
+                    var remain = 500 - (new Date().getTime() % 500);
                     setTimeout(arguments.callee, remain);
                 })();
             }
