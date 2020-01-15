@@ -25,6 +25,7 @@
         window.onload = function () {
             try {
 
+                var numberOld = "";
                 var sw = true;
                 //タイムアウト処理
                 function timeout() {
@@ -38,32 +39,41 @@
                         ('00' + now.getMinutes()).substr(-2) + ':' +
                         ('00' + now.getSeconds()).substr(-2);
                     //描画
-                    for (var count = 0; count < 19; ++count) {
-                        var digit = document.getElementById('digit' + count);
-                        var context = digit.getContext('2d');
-                        var number = datetime.substr(count, 1);
-                        var digitOnOff = 0x0;
-                        if (number >= '0' && number <= '9') {
-                            digitOnOff = digitOnOffArray[parseInt(number, 10)]
-                        }
-                        else if (number == '/') {
-                            digitOnOff = digitOnOffArray[10]
-                        }
-                        else if (number == ':') {
-                            digitOnOff = digitOnOffArray[sw ? 11 : 12];
-                        }
-                        for (var count2 = 0; count2 < 10; ++count2) {
-                            context.fillStyle = digitOnOff >> count2 & 1 ? 'black' : 'white';
-                            context.beginPath();
-                            context.moveTo(digitPolygonArray[count2][0][0] * digit.offsetWidth / 100, digitPolygonArray[count2][0][1] * digit.offsetHeight / 100);
-                            for (var count3 = 1; count3 < digitPolygonArray[count2].length; ++count3) {
-                                context.lineTo(digitPolygonArray[count2][count3][0] * digit.offsetWidth / 100, digitPolygonArray[count2][count3][1] * digit.offsetHeight / 100);
+                    for (count4 = 0; count4 < 2; ++count4) {
+                        for (var count = 0; count < 19; ++count) {
+                            var number = datetime.substr(count, 1);
+                            if (number != numberOld[count]) {
+                                var digit = document.getElementById('digit' + count);
+                                var context = digit.getContext('2d');
+                                var digitOnOff = 0x0;
+                                if (number >= '0' && number <= '9') {
+                                    digitOnOff = digitOnOffArray[parseInt(number, 10)];
+                                }
+                                else if (number == '/') {
+                                    digitOnOff = digitOnOffArray[10];
+                                }
+                                else if (number == ':') {
+                                    digitOnOff = digitOnOffArray[sw ? 11 : 12];
+                                }
+                                for (var count2 = 0; count2 < 10; ++count2) {
+                                    if ((digitOnOff >> count2 & 1) == count4) {
+                                        context.fillStyle = digitOnOff >> count2 & 1 ? 'black' : 'white';
+                                        context.beginPath();
+                                        context.moveTo(digitPolygonArray[count2][0][0] * digit.offsetWidth / 100, digitPolygonArray[count2][0][1] * digit.offsetHeight / 100);
+                                        for (var count3 = 1; count3 < digitPolygonArray[count2].length; ++count3) {
+                                            context.lineTo(digitPolygonArray[count2][count3][0] * digit.offsetWidth / 100, digitPolygonArray[count2][count3][1] * digit.offsetHeight / 100);
+                                        }
+                                        context.lineTo(digitPolygonArray[count2][0][0] * digit.offsetWidth / 100, digitPolygonArray[count2][0][1] * digit.offsetHeight / 100);
+                                        context.fill();
+                                    }
+                                }
+                                if (count4 == 1) {
+                                    numberOld[count] = number;
+                                }
                             }
-                            context.moveTo(digitPolygonArray[count2][0][0] * digit.offsetWidth / 100, digitPolygonArray[count2][0][1] * digit.offsetHeight / 100);
-                            context.fill();
                         }
                     }
-                            sw = !sw;
+                    sw = !sw;
                 }
 
                 //描画領域を取得
