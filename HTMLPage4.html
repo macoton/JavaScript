@@ -57,13 +57,13 @@
                                 }
                                 for (var index1 = 0; index1 < 10; ++index1) {
                                     if ((digitOnOff >> index1 & 1) == offOn) {
-                                        context.fillStyle = offOn? 'black' : 'white';
+//                                        context.fillStyle = offOn ? 'black' : 'white';
+                                        context.fillStyle = offOn ? 'black' : 'rgb(230,230,230)';
                                         context.beginPath();
                                         context.moveTo(digitPolygonArray[index1][0][0] * digit.offsetWidth / 100, digitPolygonArray[index1][0][1] * digit.offsetHeight / 100);
                                         for (var index2 = 1; index2 < digitPolygonArray[index1].length; ++index2) {
                                             context.lineTo(digitPolygonArray[index1][index2][0] * digit.offsetWidth / 100, digitPolygonArray[index1][index2][1] * digit.offsetHeight / 100);
                                         }
-                                        context.lineTo(digitPolygonArray[index1][0][0] * digit.offsetWidth / 100, digitPolygonArray[index1][0][1] * digit.offsetHeight / 100);
                                         context.fill();
                                     }
                                 }
