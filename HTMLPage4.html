@@ -10,17 +10,17 @@
 
     </div>
     <script>
-        var digitPolygonArray = [[[23, 1], [92, 2], [94, 3], [80, 10], [35, 10], [21, 2]], 
-        [[95, 4], [89, 47], [80, 52], [73, 48], [79, 11], [94, 3]], 
-        [[88, 56], [81, 95], [79, 96], [66, 90], [72, 56], [80, 52]], 
-        [[77, 98], [7, 98], [6, 96], [19, 90], [64, 89], [79, 97]], 
-        [[3, 95], [10, 56], [19, 52], [26, 56], [20, 89], [5, 96]], 
-        [[11, 48], [19, 4], [20, 3], [34, 9], [27, 47], [19, 52]], 
-        [[26, 48], [73, 48], [80, 52], [72, 56], [27, 56], [19, 52]], 
-        [[76, 18], [30, 90], [23, 81], [68, 10]], 
-        [[58, 25], [58, 32], [49, 32], [49, 25]], 
-        [[50, 69], [50, 75], [40, 75], [40, 69]]];
-        var digitOnOffArray = [0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x6F, 0x80, 0x300, 0x0];
+var polygonArray = [[[23, 1], [92, 2], [94, 3], [80, 10], [35, 10], [21, 2]], 
+[[95, 4], [89, 47], [80, 52], [73, 48], [79, 11], [94, 3]], 
+[[88, 56], [81, 95], [79, 96], [66, 90], [72, 56], [80, 52]], 
+[[77, 98], [7, 98], [6, 96], [19, 90], [64, 89], [79, 97]], 
+[[3, 95], [10, 56], [19, 52], [26, 56], [20, 89], [5, 96]], 
+[[11, 48], [19, 4], [20, 3], [34, 9], [27, 47], [19, 52]], 
+[[26, 48], [73, 48], [80, 52], [72, 56], [27, 56], [19, 52]], 
+[[76, 18], [30, 90], [23, 81], [68, 10]], 
+[[58, 25], [58, 32], [49, 32], [49, 25]], 
+[[50, 69], [50, 75], [40, 75], [40, 69]]];
+var onOffArray = [0x3F, 0x6, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x7, 0x7F, 0x6F, 0x80, 0x300, 0x0];
 
         window.onload = function () {
             try {
@@ -40,35 +40,35 @@
                         ('00' + now.getSeconds()).substr(-2);
                     //描画
                     for (var offOn = 0; offOn < 2; ++offOn) {
-                        for (var datetimeIndex = 0; datetimeIndex < 19; ++datetimeIndex) {
-                            var number = datetime.substr(datetimeIndex, 1);
-                            if (number != numberOld[datetimeIndex]) {
-                                var digit = document.getElementById('digit' + datetimeIndex);
+                        for (var digitIndex = 0; digitIndex < 19; ++digitIndex) {
+                            var number = datetime.substr(digitIndex, 1);
+                            if (number != numberOld[digitIndex]) {
+                                var digit = document.getElementById('digit' + digitIndex);
                                 var context = digit.getContext('2d');
                                 var digitOnOff = 0x0;
                                 if (number >= '0' && number <= '9') {
-                                    digitOnOff = digitOnOffArray[parseInt(number, 10)];
+                                    digitOnOff = onOffArray[parseInt(number, 10)];
                                 }
                                 else if (number == '/') {
-                                    digitOnOff = digitOnOffArray[10];
+                                    digitOnOff = onOffArray[10];
                                 }
                                 else if (number == ':') {
-                                    digitOnOff = digitOnOffArray[sw ? 11 : 12];
+                                    digitOnOff = onOffArray[sw ? 11 : 12];
                                 }
                                 for (var index1 = 0; index1 < 10; ++index1) {
                                     if ((digitOnOff >> index1 & 1) == offOn) {
 //                                        context.fillStyle = offOn ? 'black' : 'white';
                                         context.fillStyle = offOn ? 'black' : 'rgb(230,230,230)';
                                         context.beginPath();
-                                        context.moveTo(digitPolygonArray[index1][0][0] * digit.offsetWidth / 100, digitPolygonArray[index1][0][1] * digit.offsetHeight / 100);
-                                        for (var index2 = 1; index2 < digitPolygonArray[index1].length; ++index2) {
-                                            context.lineTo(digitPolygonArray[index1][index2][0] * digit.offsetWidth / 100, digitPolygonArray[index1][index2][1] * digit.offsetHeight / 100);
+                                        context.moveTo(polygonArray[index1][0][0] * digit.offsetWidth / 100, polygonArray[index1][0][1] * digit.offsetHeight / 100);
+                                        for (var index2 = 1; index2 < polygonArray[index1].length; ++index2) {
+                                            context.lineTo(polygonArray[index1][index2][0] * digit.offsetWidth / 100, polygonArray[index1][index2][1] * digit.offsetHeight / 100);
                                         }
                                         context.fill();
                                     }
                                 }
                                 if (offOn == 1) {
-                                    numberOld[datetimeIndex] = number;
+                                    numberOld[digitIndex] = number;
                                 }
                             }
                         }
@@ -85,11 +85,11 @@
                 //YYYY/MM/DD HH:MM:SS
                 //          1
                 //01234567890123456789
-                var digit = [];
-                for (var datetimeIndex = 0; datetimeIndex < 19; ++datetimeIndex) {
-                    digit.push('<canvas id="digit' + datetimeIndex + '" width="35%" height="70%"></canvas>');
+                var html = [];
+                for (var digitIndex = 0; digitIndex < 19; ++digitIndex) {
+                    html.push('<canvas id="digit' + digitIndex + '" width="35%" height="70%"></canvas>');
                 }
-                canvas.innerHTML = digit.join('');
+                canvas.innerHTML = html.join('');
                 //タイムアウト処理設定
                 (function () {
                     //タイムアウト処理

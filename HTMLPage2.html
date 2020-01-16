@@ -24,9 +24,9 @@
                         ('00' + now.getMinutes()).substr(-2) + ':' +
                         ('00' + now.getSeconds()).substr(-2);
                     //描画
-                    for (var datetimeIndex = 0; datetimeIndex < 19; ++datetimeIndex) {
-                        var digit = document.getElementById('digit' + datetimeIndex);
-                        digit.innerHTML = datetime.substr(datetimeIndex, 1);
+                    for (var digitIndex = 0; digitIndex < 19; ++digitIndex) {
+                        var digit = document.getElementById('digit' + digitIndex);
+                        digit.innerHTML = datetime.substr(digitIndex, 1);
                     }
                 }
 
@@ -39,11 +39,14 @@
                 //YYYY/MM/DD HH:MM:SS
                 //          1
                 //01234567890123456789
-                var digit = [];
-                for (var datetimeIndex = 0; datetimeIndex < 19; ++datetimeIndex) {
-                    digit.push('<span id="digit' + datetimeIndex + '" style="font-family: impact; font-size: 400%"></span>');
+                var html = [];
+                for (var digitIndex = 0; digitIndex < 19; ++digitIndex) {
+                    html.push('<span id="digit' + digitIndex + '" style="font-family: impact; font-size: 400%"></span>');
                 }
-                canvas.innerHTML = digit.join('');
+                canvas.innerHTML = html.join('');
+                //描画
+                for (var digitIndex = 0; digitIndex < 19; ++digitIndex) {
+                }
                 //タイムアウト処理設定
                 (function () {
                     //タイムアウト処理
